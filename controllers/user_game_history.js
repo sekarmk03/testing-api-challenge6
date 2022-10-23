@@ -1,9 +1,9 @@
-const { UserGameHistory, UserGame } = require('../models');
+const { user_game_history, user_game } = require('../models');
 
 module.exports = {
     index: async (req, res, next) => {
         try {
-            const userGameHistories = await UserGameHistory.findAll({raw: true});
+            const userGameHistories = await user_game_history.findAll({raw: true});
             return res.status(200).json({
                 status: true,
                 message: 'get all user game history success',
@@ -16,7 +16,7 @@ module.exports = {
     show: async (req, res, next) => {
         try {
             const {historyId} = req.params;
-            const userGameHistory = await UserGameHistory.findOne({where: {id: historyId}});
+            const userGameHistory = await user_game_history.findOne({where: {id: historyId}});
             if(!userGameHistory) {
                 return res.status(400).json({
                     status: false,
@@ -37,7 +37,7 @@ module.exports = {
         try {
             const {user_id, spend_time, result, score} = req.body;
 
-            const user = await UserGame.findOne({where: {id: user_id}});
+            const user = await user_game.findOne({where: {id: user_id}});
             if(!user) {
                 return res.status(400).json({
                     status: false,
@@ -46,7 +46,7 @@ module.exports = {
                 });
             }
 
-            const userGameHistory = await UserGameHistory.create({
+            const userGameHistory = await user_game_history.create({
                 user_id,
                 spend_time,
                 result,
@@ -67,7 +67,7 @@ module.exports = {
             const {historyId} = req.params;
             let {user_id, spend_time, result, score} = req.body;
 
-            const userGameHistory = await UserGameHistory.findOne({where: {id: historyId}});
+            const userGameHistory = await user_game_history.findOne({where: {id: historyId}});
             if(!userGameHistory) {
                 return res.status(400).json({
                     status: false,
@@ -81,7 +81,7 @@ module.exports = {
             if(!result) result = userGameHistory.result;
             if(!score) score = userGameHistory.score;
             
-            const isUpdated = await UserGameHistory.update({
+            const isUpdated = await user_game_history.update({
                 user_id,
                 spend_time,
                 result,
@@ -103,7 +103,7 @@ module.exports = {
         try {
             const {historyId} = req.params;
 
-            const userGameHistory = await UserGameHistory.findOne({where: {id: historyId}});
+            const userGameHistory = await user_game_history.findOne({where: {id: historyId}});
             if(!userGameHistory) {
                 return res.status(400).json({
                     status: false,
@@ -112,7 +112,7 @@ module.exports = {
                 });
             }
 
-            const isDeleted = await UserGameHistory.destroy({
+            const isDeleted = await user_game_history.destroy({
                 where: {id: historyId}
             });
 

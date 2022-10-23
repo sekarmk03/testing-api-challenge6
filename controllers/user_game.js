@@ -1,10 +1,10 @@
-const { UserGame } = require('../models');
+const { user_game } = require('../models');
 const bcrypt = require('bcrypt');
 
 module.exports = {
     index: async (req, res, next) => {
         try {
-            const usersGameData = await UserGame.findAll({raw: true});
+            const usersGameData = await user_game.findAll({raw: true});
             return res.status(200).json({
                 status: true,
                 message: 'get all user game success',
@@ -17,7 +17,7 @@ module.exports = {
     show: async (req, res, next) => {
         try {
             const {userGameId} = req.params;
-            const userGameData = await UserGame.findOne({where: {id: userGameId}});
+            const userGameData = await user_game.findOne({where: {id: userGameId}});
             if(!userGameData) {
                 return res.status(400).json({
                     status: false,
@@ -38,7 +38,7 @@ module.exports = {
         try {
             const {username, password} = req.body;
             
-            const isExist = await UserGame.findOne({where: {username: username}});
+            const isExist = await user_game.findOne({where: {username: username}});
             if(isExist) {
                 return res.status(409).json({
                     status: false,
@@ -46,7 +46,7 @@ module.exports = {
                 });
             }
 
-            const userGameData = await UserGame.create({
+            const userGameData = await user_game.create({
                 username,
                 password: await bcrypt.hash(password, 10),
             });
@@ -67,7 +67,7 @@ module.exports = {
             const {userGameId} = req.params;
             let {username, password} = req.body;
 
-            const userGameData = await UserGame.findOne({where: {id: userGameId}});
+            const userGameData = await user_game.findOne({where: {id: userGameId}});
             if(!userGameData) {
                 return res.status(400).json({
                     status: false,
@@ -79,7 +79,7 @@ module.exports = {
             if(!username) username = userGameData.username;
             if(!password) password = userGameData.password;
 
-            const isUpdated = await UserGame.update({
+            const isUpdated = await user_game.update({
                 username,
                 password: await bcrypt.hash(password, 10)
             }, {
@@ -99,7 +99,7 @@ module.exports = {
         try {
             const {userGameId} = req.params;
 
-            const userGameData = await UserGame.findOne({where: {id: userGameId}});
+            const userGameData = await user_game.findOne({where: {id: userGameId}});
             if(!userGameData) {
                 return res.status(400).json({
                     status: false,
@@ -108,7 +108,7 @@ module.exports = {
                 });
             }
 
-            const isDeleted = await UserGame.destroy({
+            const isDeleted = await user_game.destroy({
                 where: {id: userGameId}
             });
 

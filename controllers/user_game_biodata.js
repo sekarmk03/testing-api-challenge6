@@ -1,9 +1,9 @@
-const { UserGameBiodata, UserGame } = require('../models');
+const { user_game_biodata, user_game } = require('../models');
 
 module.exports = {
     index: async (req, res, next) => {
         try {
-            const usersGameBiodata = await UserGameBiodata.findAll({raw: true});
+            const usersGameBiodata = await user_game_biodata.findAll({raw: true});
             return res.status(200).json({
                 status: true,
                 message: 'get all user game biodata success',
@@ -16,7 +16,7 @@ module.exports = {
     show: async (req, res, next) => {
         try {
             const {userBiodataId} = req.params;
-            const userGameBiodata = await UserGameBiodata.findOne({where: {id: userBiodataId}});
+            const userGameBiodata = await user_game_biodata.findOne({where: {id: userBiodataId}});
             if(!userGameBiodata) {
                 return res.status(400).json({
                     status: false,
@@ -37,7 +37,7 @@ module.exports = {
         try {
             const {user_id, fullname, email, telp, age, city} = req.body;
 
-            const user = await UserGame.findOne({where: {id: user_id}});
+            const user = await user_game.findOne({where: {id: user_id}});
             if(!user) {
                 return res.status(400).json({
                     status: false,
@@ -46,7 +46,7 @@ module.exports = {
                 });
             }
             
-            const isExist = await UserGameBiodata.findOne({where: {user_id: user_id}});
+            const isExist = await user_game_biodata.findOne({where: {user_id: user_id}});
             if(isExist) {
                 return res.status(409).json({
                     status: false,
@@ -55,7 +55,7 @@ module.exports = {
                 });
             }
 
-            const userGameBiodata = await UserGameBiodata.create({
+            const userGameBiodata = await user_game_biodata.create({
                 user_id,
                 fullname,
                 email,
@@ -78,7 +78,7 @@ module.exports = {
             const {userBiodataId} = req.params;
             let {user_id, fullname, email, telp, age, city} = req.body;
 
-            const userGameBiodata = await UserGameBiodata.findOne({where: {id: userBiodataId}});
+            const userGameBiodata = await user_game_biodata.findOne({where: {id: userBiodataId}});
             if(!userGameBiodata) {
                 return res.status(400).json({
                     status: false,
@@ -94,7 +94,7 @@ module.exports = {
             if(!age) age = userGameBiodata.age;
             if(!city) city = userGameBiodata.city;
 
-            const isUpdated = await UserGameBiodata.update({
+            const isUpdated = await user_game_biodata.update({
                 user_id,
                 fullname,
                 email,
@@ -118,7 +118,7 @@ module.exports = {
         try {
             const {userBiodataId} = req.params;
 
-            const userGameBiodata = await UserGameBiodata.findOne({where: {id: userBiodataId}});
+            const userGameBiodata = await user_game_biodata.findOne({where: {id: userBiodataId}});
             if(!userGameBiodata) {
                 return res.status(400).json({
                     status: false,
@@ -127,7 +127,7 @@ module.exports = {
                 });
             }
 
-            const isDeleted = await UserGameBiodata.destroy({
+            const isDeleted = await user_game_biodata.destroy({
                 where: {id: userBiodataId}
             });
 

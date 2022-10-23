@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     score: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'UserGameHistory',
+    modelName: 'user_game_history',
   });
   return user_game_history;
 };

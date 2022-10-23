@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     city: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'UserGameBiodata',
+    modelName: 'user_game_biodata',
   });
   return user_game_biodata;
 };
