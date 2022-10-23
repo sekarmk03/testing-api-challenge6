@@ -20,7 +20,7 @@ module.exports = {
             if(!userGameBiodata) {
                 return res.status(400).json({
                     status: false,
-                    message: 'data not found',
+                    message: 'user game biodata not found',
                     data: null
                 });
             }
