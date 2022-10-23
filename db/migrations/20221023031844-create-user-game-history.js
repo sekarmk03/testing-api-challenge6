@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       result: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       score: {
         type: Sequelize.INTEGER
