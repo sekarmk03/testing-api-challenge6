@@ -6,7 +6,7 @@ module.exports = {
             const userGameHistories = await user_game_history.findAll({raw: true});
             return res.status(200).json({
                 status: true,
-                message: 'get all user game history success',
+                message: 'get all user game histories success',
                 data: userGameHistories
             })
         } catch (err) {
