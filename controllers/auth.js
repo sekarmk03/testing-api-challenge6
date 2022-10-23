@@ -1,4 +1,4 @@
-const { UserGame } = require('../models');
+const { user_game } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -9,10 +9,10 @@ const {
 module.exports = {
     register: async (req, res, next) => {
         try {
-            const { username, password } = req.body;
-
-            const existUser = await UserGame.findOne({ where: { username: username } });
-            if(existUser) {
+            const {username, password} = req.body;
+            
+            const isExist = await user_game.findOne({where: {username: username}});
+            if(isExist) {
                 return res.status(409).json({
                     status: false,
                     message: 'username already used',
@@ -20,17 +20,15 @@ module.exports = {
                 });
             }
 
-            const hashedPassword = await bcrypt.hash(password, 10);
-
-            const user = await UserGame.create({
+            const user_gameData = await user_game.create({
                 username,
-                password: hashedPassword
+                password: await bcrypt.hash(password, 10),
             });
 
             return res.status(201).json({
                 status: true,
-                message: 'create user success',
-                data: user.get()
+                message: 'create new user game success',
+                data: user_gameData
             });
 
         } catch (err) {
@@ -41,7 +39,7 @@ module.exports = {
         try {
             const { username, password } = req.body;
 
-            const user = await UserGame.findOne({where: {username: username}});
+            const user = await user_game.findOne({where: {username: username}});
             if(!user) {
                 return res.status(400).json({
                     status: false,
@@ -81,9 +79,8 @@ module.exports = {
         }
     },
     whoami: (req, res, next) => {
-        const user = req.user;
-
         try {
+            const user = req.user;
             return res.status(200).json({
                 status: true,
                 message: 'whoami success',
@@ -104,7 +101,7 @@ module.exports = {
                 });
             }
 
-            const user = await UserGame.findOne({where: {id: req.user.id}});
+            const user = await user_game.findOne({where: {id: req.user.id}});
             if(!user) {
                 return res.status(404).json({
                     status: false,

@@ -2,7 +2,7 @@ const request = require('supertest');
 const app = require('../app');
 
 // data test
-const userTest = {
+const dataTest = {
     username: 'usertest',
     password: 'password123'
 };
@@ -11,17 +11,14 @@ let userGameId;
 
 // to test create if fail
 // beforeEach( async () => {
-//     const isExist = await user_game.findOne({where: {username: userTest.username}});
-//     if(isExist) await user_game.destroy({where: {username: userTest.username}});
+//     const isExist = await user_game.findOne({where: {username: dataTest.username}});
+//     if(isExist) await user_game.destroy({where: {username: dataTest.username}});
 // });
 
-describe(`/user-games`, () => {
+describe(`/user-games endpoint groups`, () => {
     test(`TRUE should create new user game`, async () => {
         try {
-            await request(app).post('/user-games/').send({
-                username: userTest.username,
-                password: userTest.password
-            }).then(res => {
+            await request(app).post('/user-games/').send(dataTest).then(res => {
                 expect(res.statusCode).toBe(201);
                 expect(res.body).toHaveProperty('status');
                 expect(res.body).toHaveProperty('message');
@@ -30,7 +27,7 @@ describe(`/user-games`, () => {
                 expect(res.body.message).toEqual('create new user game success');
                 expect(res.body.data).toEqual(
                     expect.objectContaining({
-                        username: userTest.username
+                        username: dataTest.username
                     })
                 );
                 userGameId = res.body.data.id;
@@ -43,10 +40,7 @@ describe(`/user-games`, () => {
 
     test(`FALSE shouldn't create new user game, username already used`, async () => {
         try {
-            await request(app).post('/user-games/').send({
-                username: userTest.username,
-                password: userTest.password
-            }).then(res => {
+            await request(app).post('/user-games/').send(dataTest).then(res => {
                 expect(res.statusCode).toBe(409);
                 expect(res.body).toHaveProperty('status');
                 expect(res.body).toHaveProperty('message');
@@ -99,7 +93,7 @@ describe(`/user-games`, () => {
                 expect(res.body.data).toEqual(
                     expect.objectContaining({
                         id: userGameId,
-                        username: userTest.username,
+                        username: dataTest.username,
                         password: expect.any(String),
                         createdAt: expect.any(String),
                         updatedAt: expect.any(String)
