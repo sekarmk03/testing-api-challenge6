@@ -42,7 +42,8 @@ module.exports = {
             if(isExist) {
                 return res.status(409).json({
                     status: false,
-                    message: 'username already used'
+                    message: 'username already used',
+                    data: null
                 });
             }
 
