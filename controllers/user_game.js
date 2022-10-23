@@ -21,7 +21,7 @@ module.exports = {
             if(!userGameData) {
                 return res.status(400).json({
                     status: false,
-                    message: 'user not found',
+                    message: 'user game not found',
                     data: null
                 });
             }
@@ -69,7 +69,7 @@ module.exports = {
             if(!userGameData) {
                 return res.status(400).json({
                     status: false,
-                    message: 'user not found',
+                    message: 'user game not found',
                     data: null
                 });
             }
@@ -101,7 +101,7 @@ module.exports = {
             if(!userGameData) {
                 return res.status(400).json({
                     status: false,
-                    message: 'user not found',
+                    message: 'user game not found',
                     data: null
                 });
             }

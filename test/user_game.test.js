@@ -1,7 +1,5 @@
 const request = require('supertest');
 const app = require('../app');
-const { user_game } = require('../models');
-const seed = require('../db/seeders/20221023032325-user_game');
 
 // data test
 const userTest = {
@@ -11,13 +9,14 @@ const userTest = {
 
 let userGameId;
 
+// to test create if fail
 // beforeEach( async () => {
 //     const isExist = await user_game.findOne({where: {username: userTest.username}});
 //     if(isExist) await user_game.destroy({where: {username: userTest.username}});
 // });
 
-describe('/user-games USER GAME TEST', () => {
-    test('should create new user game', async () => {
+describe(`/user-games`, () => {
+    test(`TRUE should create new user game`, async () => {
         try {
             await request(app).post('/user-games/').send({
                 username: userTest.username,
@@ -35,14 +34,33 @@ describe('/user-games USER GAME TEST', () => {
                     })
                 );
                 userGameId = res.body.data.id;
-                console.log(userGameId);
+                // console.log(userGameId);
             })
         } catch (err) {
             expect(err).toBe('error');
         }
     });
 
-    test('should get all user game', async () => {
+    test(`FALSE shouldn't create new user game, username already used`, async () => {
+        try {
+            await request(app).post('/user-games/').send({
+                username: userTest.username,
+                password: userTest.password
+            }).then(res => {
+                expect(res.statusCode).toBe(409);
+                expect(res.body).toHaveProperty('status');
+                expect(res.body).toHaveProperty('message');
+                expect(res.body).toHaveProperty('data');
+                expect(res.body.status).toBe(false);
+                expect(res.body.message).toEqual('username already used');
+                expect(res.body.data).toBe(null);
+            })
+        } catch (err) {
+            expect(err).toBe('error');
+        }
+    });
+
+    test(`TRUE should get all user game`, async () => {
         try {
             await request(app).get('/user-games/').then(res => {
                 expect(res.statusCode).toBe(200);
@@ -69,7 +87,7 @@ describe('/user-games USER GAME TEST', () => {
         }
     });
 
-    test('should get detail user game', async () => {
+    test(`TRUE should get detail user game`, async () => {
         try {
             await request(app).get(`/user-games/${userGameId}`).then(async (res) => {
                 expect(res.statusCode).toBe(200);
@@ -93,10 +111,10 @@ describe('/user-games USER GAME TEST', () => {
         }
     });
 
-    test('should update user game', async () => {
+    test(`TRUE should update user game`, async () => {
         try {
             await request(app).put(`/user-games/${userGameId}`).send({
-                username: 'azarnuzy'
+                username: 'usertestupdated'
             }).then(res => {
                 expect(res.statusCode).toBe(200);
                 expect(res.body).toHaveProperty('status');
@@ -113,7 +131,7 @@ describe('/user-games USER GAME TEST', () => {
         }
     });
 
-    test('should delete user game', async () => {
+    test(`TRUE should delete user game`, async () => {
         try {
             await request(app).delete(`/user-games/${userGameId}`).then(res => {
                 expect(res.statusCode).toBe(201);
@@ -123,6 +141,56 @@ describe('/user-games USER GAME TEST', () => {
                 expect(res.body.status).toBe(true);
                 expect(res.body.message).toEqual('delete user game success');
                 expect(res.body.data).toBe(1);
+            })
+        } catch (err) {
+            expect(err).toBe('error');
+        }
+    });
+
+    test(`FALSE shouldn't get detail user game, user doesn't exist`, async () => {
+        try {
+            await request(app).get(`/user-games/${userGameId}`).then(async (res) => {
+                expect(res.statusCode).toBe(400);
+                expect(res.body).toHaveProperty('status');
+                expect(res.body).toHaveProperty('message');
+                expect(res.body).toHaveProperty('data');
+                expect(res.body.status).toBe(false);
+                expect(res.body.message).toEqual('user game not found');
+                expect(res.body.data).toBe(null);
+            })
+        } catch (err) {
+            expect(err).toBe('error');
+        }
+    });
+
+    test(`FALSE shouldn't update user game, user doesn't exist`, async () => {
+        try {
+            await request(app).put(`/user-games/${userGameId}`).send({
+                username: 'azarnuzy'
+            }).then(res => {
+                expect(res.statusCode).toBe(400);
+                expect(res.body).toHaveProperty('status');
+                expect(res.body).toHaveProperty('message');
+                expect(res.body).toHaveProperty('data');
+                expect(res.body.status).toBe(false);
+                expect(res.body.message).toEqual('user game not found');
+                expect(res.body.data).toBe(null);
+            })
+        } catch (err) {
+            expect(err).toBe('error');
+        }
+    });
+
+    test(`FALSE shouldn't delete user game, user doesn't exist`, async () => {
+        try {
+            await request(app).delete(`/user-games/${userGameId}`).then(res => {
+                expect(res.statusCode).toBe(400);
+                expect(res.body).toHaveProperty('status');
+                expect(res.body).toHaveProperty('message');
+                expect(res.body).toHaveProperty('data');
+                expect(res.body.status).toBe(false);
+                expect(res.body.message).toEqual('user game not found');
+                expect(res.body.data).toBe(null);
             })
         } catch (err) {
             expect(err).toBe('error');
