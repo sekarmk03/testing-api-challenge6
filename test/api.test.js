@@ -39,7 +39,7 @@ describe(`/auth endpoint group`, () => {
         if(isExist) await user_game.destroy({where: {username: dataTest1.username}});
     });
 
-    test(`TRUE should register success`, async () => {
+    test(`POSITIVE-TEST should register success`, async () => {
         try {
             await request(app).post('/auth/register').send(dataTest1).then(res => {
                 expect(res.statusCode).toBe(201);
@@ -59,7 +59,7 @@ describe(`/auth endpoint group`, () => {
         }
     })
 
-    test(`FALSE should register fail, username already used`, async () => {
+    test(`NEGATIVE-TEST should register fail, username already used`, async () => {
         try {
             await request(app).post('/auth/register').send(dataTest1).then(res => {
                 expect(res.statusCode).toBe(409);
@@ -75,7 +75,7 @@ describe(`/auth endpoint group`, () => {
         }
     });
 
-    test(`TRUE should login success`, async () => {
+    test(`POSITIVE-TEST should login success`, async () => {
         try {
             await request(app).post('/auth/login').send(dataTest1).then(res => {
                 expect(res.statusCode).toBe(201);
@@ -98,7 +98,7 @@ describe(`/auth endpoint group`, () => {
         }
     });
 
-    test(`FALSE should login fail, wrong username/password`, async () => {
+    test(`NEGATIVE-TEST should login fail, wrong username/password`, async () => {
         try {
             await request(app).post('/auth/login').send({
                 username: dataTest1.username,
@@ -125,7 +125,7 @@ describe(`/user-games endpoint groups`, () => {
         if(isExist) await user_game.destroy({where: {username: dataTest1.username}});
     });
 
-    test(`TRUE should create new user game`, async () => {
+    test(`POSITIVE-TEST should create new user game`, async () => {
         try {
             await request(app).post('/user-games/').send(dataTest1).then(res => {
                 expect(res.statusCode).toBe(201);
@@ -147,7 +147,7 @@ describe(`/user-games endpoint groups`, () => {
         }
     });
 
-    test(`FALSE shouldn't create new user game, username already used`, async () => {
+    test(`NEGATIVE-TEST shouldn't create new user game, username already used`, async () => {
         try {
             await request(app).post('/user-games/').send(dataTest1).then(res => {
                 expect(res.statusCode).toBe(409);
@@ -163,7 +163,7 @@ describe(`/user-games endpoint groups`, () => {
         }
     });
 
-    test(`TRUE should get all user game`, async () => {
+    test(`POSITIVE-TEST should get all user game`, async () => {
         try {
             await request(app).get('/user-games/').then(res => {
                 expect(res.statusCode).toBe(200);
@@ -190,7 +190,7 @@ describe(`/user-games endpoint groups`, () => {
         }
     });
 
-    test(`TRUE should get detail user game`, async () => {
+    test(`POSITIVE-TEST should get detail user game`, async () => {
         try {
             await request(app).get(`/user-games/${userGameId}`).then(async (res) => {
                 expect(res.statusCode).toBe(200);
@@ -214,7 +214,7 @@ describe(`/user-games endpoint groups`, () => {
         }
     });
 
-    test(`TRUE should update user game`, async () => {
+    test(`POSITIVE-TEST should update user game`, async () => {
         try {
             await request(app).put(`/user-games/${userGameId}`).send({
                 username: 'usertestupdated'
@@ -234,7 +234,7 @@ describe(`/user-games endpoint groups`, () => {
         }
     });
 
-    test(`TRUE should delete user game`, async () => {
+    test(`POSITIVE-TEST should delete user game`, async () => {
         try {
             await request(app).delete(`/user-games/${userGameId}`).then(res => {
                 expect(res.statusCode).toBe(201);
@@ -250,7 +250,7 @@ describe(`/user-games endpoint groups`, () => {
         }
     });
 
-    test(`FALSE shouldn't get detail user game, user doesn't exist`, async () => {
+    test(`NEGATIVE-TEST shouldn't get detail user game, user doesn't exist`, async () => {
         try {
             await request(app).get(`/user-games/${userGameId}`).then(async (res) => {
                 expect(res.statusCode).toBe(400);
@@ -266,7 +266,7 @@ describe(`/user-games endpoint groups`, () => {
         }
     });
 
-    test(`FALSE shouldn't update user game, user doesn't exist`, async () => {
+    test(`NEGATIVE-TEST shouldn't update user game, user doesn't exist`, async () => {
         try {
             await request(app).put(`/user-games/${userGameId}`).send({
                 username: 'azarnuzy'
@@ -284,7 +284,7 @@ describe(`/user-games endpoint groups`, () => {
         }
     });
 
-    test(`FALSE shouldn't delete user game, user doesn't exist`, async () => {
+    test(`NEGATIVE-TEST shouldn't delete user game, user doesn't exist`, async () => {
         try {
             await request(app).delete(`/user-games/${userGameId}`).then(res => {
                 expect(res.statusCode).toBe(400);
@@ -302,7 +302,7 @@ describe(`/user-games endpoint groups`, () => {
 });
 
 describe(`/user-game-biodata`, () => {
-    test(`FALSE shouldn't create new user game biodata, unauthorized`, async () => {
+    test(`NEGATIVE-TEST shouldn't create new user game biodata, unauthorized`, async () => {
         try {
             await request(app).post('/user-game-biodata/').send(dataTest2).then(res => {
                 expect(res.statusCode).toBe(401);
@@ -318,7 +318,7 @@ describe(`/user-game-biodata`, () => {
         }
     })
 
-    test(`FALSE shouldn't create new user game biodata, user game doesn't exist`, async () => {
+    test(`NEGATIVE-TEST shouldn't create new user game biodata, user game doesn't exist`, async () => {
         try {
             await request(app).post('/user-game-biodata/').set('Authorization', `${token}`).send({
                 user_id: 9999,
@@ -341,7 +341,7 @@ describe(`/user-game-biodata`, () => {
         }
     })
 
-    test(`TRUE should create new user game biodata`, async () => {
+    test(`POSITIVE-TEST should create new user game biodata`, async () => {
         try {
             await request(app).post('/user-game-biodata/').set('Authorization', `${token}`).send(dataTest2).then(res => {
                 expect(res.statusCode).toBe(201);
@@ -368,7 +368,7 @@ describe(`/user-game-biodata`, () => {
         }
     });
 
-    test(`FALSE shouldn't create new user game biodata, user game biodata already exist`, async () => {
+    test(`NEGATIVE-TEST shouldn't create new user game biodata, user game biodata already exist`, async () => {
         try {
             await request(app).post('/user-game-biodata/').set('Authorization', `${token}`).send(dataTest2).then(res => {
                 expect(res.statusCode).toBe(409);
@@ -384,7 +384,7 @@ describe(`/user-game-biodata`, () => {
         }
     });
 
-    test(`TRUE should get all user game biodata`, async () => {
+    test(`POSITIVE-TEST should get all user game biodata`, async () => {
         try {
             await request(app).get('/user-game-biodata/').set('Authorization', `${token}`).then(res => {
                 expect(res.statusCode).toBe(200);
@@ -415,7 +415,7 @@ describe(`/user-game-biodata`, () => {
         }
     });
 
-    test(`TRUE should get detail user game biodata`, async () => {
+    test(`POSITIVE-TEST should get detail user game biodata`, async () => {
         try {
             await request(app).get(`/user-game-biodata/${userBiodataId}`).set('Authorization', `${token}`).then(res => {
                 expect(res.statusCode).toBe(200);
@@ -443,7 +443,7 @@ describe(`/user-game-biodata`, () => {
         }
     });
 
-    test(`TRUE should update user game`, async () => {
+    test(`POSITIVE-TEST should update user game`, async () => {
         try {
             await request(app).put(`/user-game-biodata/${userBiodataId}`).set('Authorization', `${token}`).send({
                 user_id: 2,
@@ -464,7 +464,7 @@ describe(`/user-game-biodata`, () => {
         }
     });
 
-    test(`TRUE should delete user game`, async () => {
+    test(`POSITIVE-TEST should delete user game`, async () => {
         try {
             await request(app).delete(`/user-game-biodata/${userBiodataId}`).set('Authorization', `${token}`).then(res => {
                 expect(res.statusCode).toBe(201);
@@ -480,7 +480,7 @@ describe(`/user-game-biodata`, () => {
         }
     });
 
-    test(`FALSE shouldn't get detail user game biodata, user game biodata doesn't exist`, async () => {
+    test(`NEGATIVE-TEST shouldn't get detail user game biodata, user game biodata doesn't exist`, async () => {
         try {
             await request(app).get(`/user-game-biodata/${userBiodataId}`).set('Authorization', `${token}`).then(res => {
                 expect(res.statusCode).toBe(400);
@@ -496,7 +496,7 @@ describe(`/user-game-biodata`, () => {
         }
     });
 
-    test(`FALSE shouldn't update user game biodata, user game biodata doesn't exist`, async () => {
+    test(`NEGATIVE-TEST shouldn't update user game biodata, user game biodata doesn't exist`, async () => {
         try {
             await request(app).put(`/user-game-biodata/${userBiodataId}`).set('Authorization', `${token}`).send({
                 fullname: 'user testing sksk',
@@ -515,7 +515,7 @@ describe(`/user-game-biodata`, () => {
         }
     });
 
-    test(`FALSE shouldn't delete user game biodata, user game biodata doesn't exist`, async () => {
+    test(`NEGATIVE-TEST shouldn't delete user game biodata, user game biodata doesn't exist`, async () => {
         try {
             await request(app).delete(`/user-game-biodata/${userBiodataId}`).set('Authorization', `${token}`).then(res => {
                 expect(res.statusCode).toBe(400);
@@ -533,7 +533,7 @@ describe(`/user-game-biodata`, () => {
 });
 
 describe(`/user-game-histories`, () => {
-    test(`FALSE shouldn't create new user game history, unauthorized`, async () => {
+    test(`NEGATIVE-TEST shouldn't create new user game history, unauthorized`, async () => {
         try {
             await request(app).post('/user-game-histories/').send(dataTest3).then(res => {
                 expect(res.statusCode).toBe(401);
@@ -549,7 +549,7 @@ describe(`/user-game-histories`, () => {
         }
     });
 
-    test(`FALSE shouldn't create new user game history, user game doesn't exist`, async () => {
+    test(`NEGATIVE-TEST shouldn't create new user game history, user game doesn't exist`, async () => {
         try {
             await request(app).post('/user-game-histories/').set('Authorization', `${token}`).send({
                 user_id: 9999,
@@ -570,7 +570,7 @@ describe(`/user-game-histories`, () => {
         }
     })
 
-    test(`TRUE should create new user game history`, async () => {
+    test(`POSITIVE-TEST should create new user game history`, async () => {
         try {
             await request(app).post('/user-game-histories/').set('Authorization', `${token}`).send(dataTest3).then(res => {
                 expect(res.statusCode).toBe(201);
@@ -590,7 +590,7 @@ describe(`/user-game-histories`, () => {
         }
     });
 
-    test(`TRUE should get all user game histories`, async () => {
+    test(`POSITIVE-TEST should get all user game histories`, async () => {
         try {
             await request(app).get('/user-game-histories/').set('Authorization', `${token}`).then(res => {
                 expect(res.statusCode).toBe(200);
@@ -617,7 +617,7 @@ describe(`/user-game-histories`, () => {
         }
     });
 
-    test(`TRUE should get detail user game history`, async () => {
+    test(`POSITIVE-TEST should get detail user game history`, async () => {
         try {
             await request(app).get(`/user-game-histories/${userHistoryId}`).set('Authorization', `${token}`).then(res => {
                 expect(res.statusCode).toBe(200);
@@ -635,7 +635,7 @@ describe(`/user-game-histories`, () => {
         }
     });
 
-    test(`TRUE should update user game history`, async () => {
+    test(`POSITIVE-TEST should update user game history`, async () => {
         try {
             await request(app).put(`/user-game-histories/${userHistoryId}`).set('Authorization', `${token}`).send({
                 spend_time: 5200,
@@ -656,7 +656,7 @@ describe(`/user-game-histories`, () => {
         }
     });
 
-    test(`TRUE should delete user game history`, async () => {
+    test(`POSITIVE-TEST should delete user game history`, async () => {
         try {
             await request(app).delete(`/user-game-histories/${userHistoryId}`).set('Authorization', `${token}`).then(res => {
                 expect(res.statusCode).toBe(201);
@@ -672,7 +672,7 @@ describe(`/user-game-histories`, () => {
         }
     });
 
-    test(`FALSE shouldn't get detail user game history, user game history doesn't exist`, async () => {
+    test(`NEGATIVE-TEST shouldn't get detail user game history, user game history doesn't exist`, async () => {
         try {
             await request(app).get(`/user-game-histories/${userHistoryId}`).set('Authorization', `${token}`).then(res => {
                 expect(res.statusCode).toBe(400);
@@ -688,7 +688,7 @@ describe(`/user-game-histories`, () => {
         }
     });
 
-    test(`FALSE shouldn't update user game history, user game history doesn't exist`, async () => {
+    test(`NEGATIVE-TEST shouldn't update user game history, user game history doesn't exist`, async () => {
         try {
             await request(app).put(`/user-game-histories/${userHistoryId}`).set('Authorization', `${token}`).send({
                 spend_time: 7100,
@@ -707,7 +707,7 @@ describe(`/user-game-histories`, () => {
         }
     });
 
-    test(`FALSE shouldn't delete user game history, user game history doesn't exist`, async () => {
+    test(`NEGATIVE-TEST shouldn't delete user game history, user game history doesn't exist`, async () => {
         try {
             await request(app).delete(`/user-game-histories/${userHistoryId}`).set('Authorization', `${token}`).then(res => {
                 expect(res.statusCode).toBe(400);
