@@ -54,9 +54,7 @@ module.exports = {
             return res.status(201).json({
                 status: true,
                 message: 'create new user game success',
-                data: {
-                    username: userGameData.username
-                }
+                data: userGameData
             });
         } catch (err) {
             next(err);
@@ -112,7 +110,7 @@ module.exports = {
                 where: {id: userGameId}
             });
 
-            return res.status(200).json({
+            return res.status(201).json({
                 status: true,
                 message: 'delete user game success',
                 data: isDeleted

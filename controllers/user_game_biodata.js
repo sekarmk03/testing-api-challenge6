@@ -131,7 +131,7 @@ module.exports = {
                 where: {id: userBiodataId}
             });
 
-            return res.status(200).json({
+            return res.status(201).json({
                 status: true,
                 message: 'delete user game biodata success',
                 data: isDeleted
