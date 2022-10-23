@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../app');
+const app = require('../index');
 const {user_game} = require('../models')
 
 // data test user_game
